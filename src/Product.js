@@ -15,16 +15,18 @@ class Product extends Component {
                 currManager: ''
             }
         }
+    this.handleSubmit = this.handleSubmit.bind(this)
     }
-    handleClick() {
-        const { product } = this.props
+    handleSubmit(ev) {
+        const { product, set } = this.props
         product.managerId = this.state.currManager;
-        this.props.set(product)
+        set(product)
+        ev.preventDefault();
     }
     render() {
         const { users } = this.props;
         return (
-            <div>
+            <form onSubmit={this.handleSubmit}>
                 <select value={this.state.currManager} onChange={(ev) => this.setState({ currManager: ev.target.value || null })} className="form-control">
                     <option value="">--none--</option>
                     {
@@ -33,17 +35,14 @@ class Product extends Component {
                         ))
                     }
                 </select>
-                <div>
-                    <button type="submit" className="mt-3 btn btn-primary" onClick={() => this.handleClick()}>Save</button>
-                </div>
-            </div>
+                <input type="submit" className="mt-3 btn btn-primary" value="Save" />
+            </form>
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        products: state.products,
         users: state.users
     }
 }
